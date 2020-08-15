@@ -12,13 +12,3 @@ module.exports = merge(webpackBaseConfig, {
         ]
     }
 });
-module.exports = merge(webpackBaseConfig, {
-    plugins: [
-        new HTMLInlineCSSWebpackPlugin({
-            replace: {
-                removeTarget: true,
-                target: '<!--{{inline_css_plugin}}-->',
-            },
-        }),
-    ]
-});
