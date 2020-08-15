@@ -1,0 +1,6 @@
+.sass-cache
+.thumbs
+.DS_STORE
+.idea
+node_modules
+dist/
