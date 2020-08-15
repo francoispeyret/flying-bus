@@ -74,10 +74,14 @@ let s = (_) => {
     });
 
     window.addEventListener('keydown', (e) => {
-        e.preventDefault();
+        //e.preventDefault();
+        //console.log(e.keyCode);
         switch (e.keyCode) {
             case 40:
                 bus.moveDown(_);
+            break;
+            case 39:
+                bus.moveRight(_);
             break;
             case 38:
                 bus.moveUp(_);

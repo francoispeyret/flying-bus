@@ -3,8 +3,16 @@ export default class Bus {
         this.pos = _.createVector(150, 100);
         this.w = 340;
         this.h = 150;
-        this.moveDirection = null;
-        this.moveMethodIteration = 0;
+
+        this.moveDirection = {
+            up: false,
+            right: false
+        };
+        this.moveMethodIteration = {
+            up: 0,
+            right: 0
+        };
+
         this.angle = 0;
         this.angleIteration = 0;
 
@@ -12,6 +20,7 @@ export default class Bus {
     }
 
     draw(_) {
+        //console.log(this.pos.x);
         _.push();
 
             _.translate(this.pos.x, this.pos.y);
@@ -101,8 +110,13 @@ export default class Bus {
 
     moveUp(_) {
         //this.pos.add(_.createVector(0,-2));
-        this.moveDirection = 'up';
-        this.moveMethodIteration = _.QUARTER_PI;
+        this.moveDirection.up = true;
+        this.moveMethodIteration.up = 0;
+        this.angleIteration = 0;
+    }
+    moveRight(_) {
+        this.moveDirection.right = true;
+        this.moveMethodIteration.right = 0;
         this.angleIteration = 0;
     }
     moveDown(_) {
@@ -110,24 +124,45 @@ export default class Bus {
     }
 
     moveMethod(_) {
-        if(this.moveMethodIteration < _.HALF_PI && this.angleIteration < 90) {
-            this.moveMethodIteration = this.moveMethodIteration + _.QUARTER_PI/90;
+        if(this.angleIteration < 90) {
             this.angleIteration++;
         } else {
-            this.moveMethodIteration = _.QUARTER_PI;
             this.angleIteration = 0;
-            this.moveDirection= null;
-            this.angle = - 0;
+            this.moveDirection.right = false;
+            this.angle = 0;
         }
-        if(this.moveDirection == 'up') {
+        if(this.moveDirection.up && this.moveMethodIteration.up < _.QUARTER_PI) {
+            //console.log(this.moveMethodIteration.up);
+            this.moveMethodIteration.up = this.moveMethodIteration.up + _.QUARTER_PI/90;
+
+            const force = -_.cos(this.moveMethodIteration.up) * 5;
+            this.pos.add(_.createVector(0, force));
+
             const angleAmplitude = -.3;
-            const force = -_.cos(this.moveMethodIteration) * 10;
             if(this.angleIteration < 45) {
                 this.angle = _.map(this.angleIteration, 0, 90, 0, angleAmplitude);
             } else {
                 this.angle = _.map(this.angleIteration, 0, 90,  angleAmplitude, 0);
             }
-            this.pos.add(_.createVector(0, force));
+        } else {
+            this.moveDirection.up = false;
+            this.moveMethodIteration.up = 0;
+        }
+        if(this.moveDirection.right && this.moveMethodIteration.right < _.PI) {
+            this.moveMethodIteration.right = this.moveMethodIteration.right - _.PI/45;
+
+            const force = _.cos(this.moveMethodIteration.right) * 10;
+            this.pos.add(_.createVector(force, 0));
+
+            const angleAmplitude = -.1;
+            if(this.angleIteration < 45) {
+                this.angle = _.map(this.angleIteration, 0, 90, 0, angleAmplitude);
+            } else {
+                this.angle = _.map(this.angleIteration, 0, 90,  angleAmplitude, 0);
+            }
+        } else {
+            this.moveDirection.right = false;
+            this.moveMethodIteration.right = 0;
         }
     }
 }
