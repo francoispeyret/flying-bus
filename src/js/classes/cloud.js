@@ -16,21 +16,21 @@ export default class Cloud {
 
         switch(this.shape) {
             case 0:
-                _.circle(this.pos.x, this.pos.y, 80);
-                _.circle(this.pos.x - 30, this.pos.y-20, 45);
-                _.circle(this.pos.x - 10, this.pos.y-5, 45);
-                _.circle(this.pos.x - 40, this.pos.y+15, 50);
-                _.circle(this.pos.x - 65, this.pos.y+28, 30);
-                _.circle(this.pos.x + 32, this.pos.y+12, 60);
-                _.circle(this.pos.x + 58, this.pos.y+15, 40);
+                _.rect(this.pos.x, this.pos.y, 80, 80);
+                _.rect(this.pos.x - 30, this.pos.y-20, 45, 45);
+                _.rect(this.pos.x - 10, this.pos.y-5, 45, 45);
+                _.rect(this.pos.x - 40, this.pos.y+15, 50, 50);
+                _.rect(this.pos.x - 65, this.pos.y+28, 30, 30);
+                _.rect(this.pos.x + 32, this.pos.y+12, 60, 60);
+                _.rect(this.pos.x + 58, this.pos.y+15, 40, 40);
             break;
             case 1:
-                _.circle(this.pos.x, this.pos.y, 80);
-                _.circle(this.pos.x + 22, this.pos.y-20, 45);
-                _.circle(this.pos.x - 15, this.pos.y+2, 45);
-                _.circle(this.pos.x - 40, this.pos.y+15, 50);
-                _.circle(this.pos.x - 41, this.pos.y-11, 30);
-                _.circle(this.pos.x + 32, this.pos.y+12, 60);
+                _.rect(this.pos.x, this.pos.y, 80, 80);
+                _.rect(this.pos.x + 22, this.pos.y-20, 45, 45);
+                _.rect(this.pos.x - 15, this.pos.y+2, 45, 45);
+                _.rect(this.pos.x - 40, this.pos.y+15, 50, 50);
+                _.rect(this.pos.x - 41, this.pos.y-11, 30, 30);
+                _.rect(this.pos.x + 32, this.pos.y+12, 60, 60);
             break;
         }
 

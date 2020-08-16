@@ -93,10 +93,6 @@ module.exports = {
             from: './src/sounds',
             to: 'assets/sounds'
         }]),
-        new CopyWebpackPlugin([{
-            from: './src/fonts',
-            to: 'assets/fonts'
-        }]),
         new CleanWebpackPlugin()
     ]
 }

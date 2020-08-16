@@ -2,11 +2,11 @@ export default class Tree {
     constructor(_, map, overlay) {
         this.w = 200;
         this.h = 200;
-        if(overlay < 0) {
-            this.pos = _.createVector(_.width/2 + _.width + this.w, _.height - map.altitude - this.h + overlay);
-        } else {
-            this.pos = _.createVector(_.width + this.w, _.height - map.altitude - this.h + overlay);
-        }
+
+        this.pos = _.createVector(
+            _.width + _.random(-this.w*1.5,this.w*1.5) + this.w *1.5,
+            _.height - map.altitude - this.h + overlay
+        );
     }
 
     draw(_) {
@@ -31,15 +31,6 @@ export default class Tree {
             _.fill('#4D352D');
             _.rect(138, 123,  this.w / 12, this.h / 12);
         _.pop();
-
-
-        switch(this.shape) {
-            case 0:
-            break;
-            case 1:
-            break;
-        }
-
     }
 
     update(_) {

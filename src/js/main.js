@@ -1,5 +1,5 @@
 import * as p5 from "p5";
-//import * as p5moduleSound from  "p5/lib/addons/p5.sound";
+import * as p5moduleSound from  "p5/lib/addons/p5.sound";
 
 import Map from "./classes/map";
 import Bus from "./classes/bus";
@@ -17,8 +17,16 @@ let s = (_) => {
     let treeController2 = [];
 
     let imgMoon = null;
+    let sounds = {
+        owl: null
+    };
 
     _.preload = () => {
+        sounds.owl = _.loadSound('./assets/sounds/owl.mp3');
+        sounds.owl.amp(0.3);
+        sounds.blackbird = _.loadSound('./assets/sounds/blackbird.mp3');
+        sounds.jump = _.loadSound('./assets/sounds/jump.mp3');
+        sounds.bump = _.loadSound('./assets/sounds/bump.mp3');
         imgMoon = _.loadImage('./assets/images/moon.png');
     };
 
@@ -28,14 +36,14 @@ let s = (_) => {
         _.frameRate(60);
         
         map = new Map(_,imgMoon);
-        bus = new Bus(_);
+        bus = new Bus(_,sounds);
         cloudController.push(new Cloud(_));
         treeController1.push(new Tree(_, map, _.random(25,90)));
         treeController2.push(new Tree(_, map, _.random(-10,-25)));
     };
 
     _.draw = () => {
-        map.draw(_);
+        map.draw(_, sounds);
         for(let t = 0; t < treeController2.length; t++) {
             treeController2[t].draw(_);
             treeController2[t].update(_);
@@ -67,11 +75,33 @@ let s = (_) => {
         if( _.frameCount % 180 == 0 && treeController2.length < 6) {
             treeController2.push(new Tree(_, map, _.random(-10,-25)));
         }
+
+        
+
+        /*if(map.time > 100) {
+            map.cycle = 'water';
+            const water = _.color('hsla(200, 60%, 50%, 0.5)');
+            _.fill(water);
+            _.rect(0,0,_.width, _.height);
+        } else if(map.time > 300) {
+            map.cycle = 'sun'
+        }*/
     };
 
     window.addEventListener('blur', (e) => {
-
+        bus.motor.sound1.stop();
+        bus.motor.sound2.stop();
+        bus.motor.sound3.stop();
     });
+
+    window.addEventListener('focus', (e) => {
+        if(bus !== null) {
+            bus.motor.sound1.start();
+            bus.motor.sound2.start();
+            bus.motor.sound3.start();
+        }
+    });
+
 
     window.addEventListener('keydown', (e) => {
         //e.preventDefault();

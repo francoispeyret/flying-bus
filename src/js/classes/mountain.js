@@ -1,35 +1,39 @@
 export default class Mountain {
-    constructor(_) {
+    constructor(_, size) {
         this.reset(_);
+        this.size = size == 'large' ? _.width : _.width/3;
     }
 
     reset(_) {
-        this.pos = _.createVector(_.width*2, _.height);
+        this.pos = _.createVector(_.width + this.size, _.height);
     }
 
-    draw(_) {
+    draw(_, light) {
         _.noStroke();
         
-        _.fill('#B1D2B1');
+        const moutainColor = _.color('hsl(32, 20%, ' + (35 + light /2) + '%)');
+        //_.fill('#B1D2B1');
+        _.fill(moutainColor);
         _.push();
             _.translate(this.pos.x, this.pos.y);
             _.beginShape();
-            _.vertex(-_.width, 0);
+            _.vertex(-this.size, 0);
             _.vertex(0, -_.height/1.5);
-            _.vertex(_.width, 0);
+            _.vertex(this.size, 0);
             _.endShape(_.CLOSE);
 
-            _.fill('#fff');
+            const snowColor = _.color('hsl(52, 94%, ' + (94 + light/1.5) + '%)');
+            _.fill(snowColor);
             _.beginShape();
-            _.vertex(-_.width/4, -_.height/2);
+            _.vertex(-this.size/4, -_.height/2);
             _.vertex(0, -_.height/1.5);
-            _.vertex(_.width/4, -_.height/2);
+            _.vertex(this.size/4, -_.height/2);
             _.endShape(_.CLOSE);
         _.pop();
 
         this.pos.add(_.createVector(-1,0));
 
-        if(this.pos.x < -_.width) {
+        if(this.pos.x < -this.size) {
             this.reset(_);
         }
 

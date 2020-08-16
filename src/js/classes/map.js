@@ -1,10 +1,25 @@
 
 import Mountain from "./mountain";
+import House from "./house";
+import Ground from "./ground";
 
 export default class Map {
     constructor(_, imgMoon){
         this.altitude = 150;
-        this.mountain = new Mountain(_);
+
+        this.biome = {
+            i: 0,
+            period: 180,
+            name: 'grass'
+        };
+
+        this.grass = new Ground(_, 'grass', 0);
+        this.desert = new Ground(_, 'desert', 1);
+        this.water = new Ground(_, 'water', 0);
+
+        this.mountainLarge = new Mountain(_, 'large');
+        this.mountainMini = new Mountain(_, 'mini');
+
 
         this.sunR = -_.height/3;
         this.sunPos = _.createVector(_.width/2, this.sunR);
@@ -16,13 +31,17 @@ export default class Map {
 
         this.light = 50;
         this.cycle = 'sun';
-        this.timeSpeed = 1;
+        this.timeSpeed = .1;
 
         this.skyLimit = window.innerHeight - this.altitude;
+        this.house = new House(_, this);
+
+        this.time = 0;
 
     }
 
-    draw(_) {
+    draw(_, sounds) {
+        this.time++;
         //const this.skyLimit = window.innerHeight - this.altitude;
         _.noStroke();
         
@@ -30,30 +49,34 @@ export default class Map {
         const ciel = _.color('hsl(198, 100%, ' + (14 + this.light) + '%)');
         _.fill(ciel);
         _.rect(0, 0, _.width, this.skyLimit);
+
         // soleil
         const soleil = _.color('hsl('+this.sunHue+', 81%, '+this.sunLight+'%)');
         _.fill(soleil);
         _.circle(this.sunPos.x,this.sunPos.y, this.sunR);
+
         // moon
         _.push();
-        _.translate(this.moonPos.x -  this.sunR /2, this.moonPos.y - this.sunR / 2);
-        _.image(this.moonImg, 0, 0, this.sunR, this.sunR);
+            _.translate(this.moonPos.x -  this.sunR /2, this.moonPos.y - this.sunR / 2);
+            _.image(this.moonImg, 0, 0, this.sunR, this.sunR);
         _.pop();
 
-        this.mountain.draw(_);
+        this.mountainLarge.draw(_, this.light);
+        this.mountainMini.draw(_, this.light);
 
-        _.fill('#3A643A');
-        _.rect(0, this.skyLimit, _.width, _.height - this.skyLimit);
-        _.fill('#191012');
-        _.rect(0, this.skyLimit - 10, _.width, 10);
-        _.fill('#3A643A');
-        _.rect(0, this.skyLimit - 40, _.width, 30);
-        _.fill('#437543');
-        _.rect(0, this.skyLimit - 70, _.width, 30);
-        _.fill('#4A824A');
-        _.rect(0, this.skyLimit - 90, _.width, 20);
-        _.fill('#528E52');
-        _.rect(0, this.skyLimit - 100, _.width, 10);
+        this.house.draw(_, this.light);
+        this.house.update(_);
+
+        // biome 
+        //this.biome.i += 5;
+        this.grass.draw(_, this.light, this.skyLimit);
+        this.desert.draw(_, this.light, this.skyLimit);
+        
+
+        if(0 == 1) {
+            this.water.draw(_, this.light, this.skyLimit);
+        }
+
 
         //console.log(this.sunPos.y);
         if(this.cycle == 'sun') {
@@ -74,6 +97,8 @@ export default class Map {
             if(this.sunPos.y > _.height - this.sunR) {
                 this.sunPos.y = this.sunR;
                 this.cycle = 'moon';
+                sounds.owl.play();
+                sounds.blackbird.stop();
             } else {
                 this.sunPos.add(_.createVector(0, this.timeSpeed));
             }
@@ -85,12 +110,12 @@ export default class Map {
             if(this.moonPos.y > _.height - this.sunR) {
                 this.moonPos.y = this.sunR;
                 this.cycle = 'sun';
+                sounds.blackbird.play();
+                sounds.owl.stop();
             } else {
                 this.moonPos.add(_.createVector(0, this.timeSpeed));
             }
         }
-
-
     }
 
 }

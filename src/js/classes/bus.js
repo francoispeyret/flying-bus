@@ -1,5 +1,8 @@
+import p5 from 'p5/lib/p5';
+import * as p5moduleSound from  "p5/lib/addons/p5.sound";
+
 export default class Bus {
-    constructor(_) {
+    constructor(_, sounds) {
         this.pos = _.createVector(150, 100);
         this.w = 340;
         this.h = 150;
@@ -17,14 +20,32 @@ export default class Bus {
         this.angleIteration = 0;
 
         this.time = 0;
+
+        this.motor = {
+            i:0,
+            sound1: new p5.Oscillator(),
+            sound2: new p5.Oscillator(),
+            sound3: new p5.Oscillator(),
+        };
+
+        this.motor.sound1.setType('triangle');
+        this.motor.sound2.setType('triangle');
+        this.motor.sound3.setType('triangle');
+        this.motor.sound1.amp(.02);
+        this.motor.sound2.amp(.08);
+        this.motor.sound3.amp(.12);
+
+        this.sounds = sounds;
+
+        
     }
 
     draw(_) {
         //console.log(this.pos.x);
         _.push();
 
-            _.translate(this.pos.x, this.pos.y);
-            _.rotate(this.angle)
+            _.translate(this.pos.x, this.pos.y - this.h/2);
+            _.rotate(_.createVector(50, this.pos.y).limit(50).heading() - _.HALF_PI +_.QUARTER_PI/13);
 
             _.noFill();
             _.stroke(0);
@@ -99,13 +120,35 @@ export default class Bus {
     }
 
     update(_, map) {
-        if(this.pos.y >  _.height - _.height/4) {
+        if(this.pos.y >  window.innerHeight - 350) {
             this.time += .1;
         }
-        if(window.innerHeight - map.altitude > this.pos.y + this.h +5) {
+        if(this.pos.y >  window.innerHeight - 250 &&
+            this.pos.y <  window.innerHeight - 240 &&
+             this.sounds.bump.isPlaying()==false)
+            this.sounds.bump.play();
+        if(this.pos.x - this.w > _.width) {
+            this.pos.x = -this.w;
+        }
+        if(this.pos.x < -this.w*2) {
+            this.pos.x = _.width + this.w /2;
+        }
+        if(window.innerHeight - map.altitude > this.pos.y + this.h /2 +5) {
             this.pos.add(_.createVector(0,3));
         }
         this.moveMethod(_);
+        this.motor.sound1.freq(73.4 + this.motor.i   + _.abs(5*3));
+        this.motor.sound2.freq(43.6 + this.motor.i*3 + _.abs(5*2));
+        this.motor.sound3.freq(27.5 + this.motor.i*2 + _.abs(5));
+        if(this.motor.i == 0) {
+            this.motor.sound1.start();
+            this.motor.sound2.start();
+            this.motor.sound3.start();
+        }
+        this.motor.i++;
+        if(this.motor.i>10) {
+            this.motor.i = 1;
+        }
     }
 
     moveUp(_) {
@@ -133,10 +176,15 @@ export default class Bus {
         }
         if(this.moveDirection.up && this.moveMethodIteration.up < _.QUARTER_PI) {
             //console.log(this.moveMethodIteration.up);
+            if(this.moveMethodIteration.up == 0 && this.sounds.jump.isPlaying()==false) {
+                this.sounds.jump.play();
+            }
+
             this.moveMethodIteration.up = this.moveMethodIteration.up + _.QUARTER_PI/90;
 
             const force = -_.cos(this.moveMethodIteration.up) * 5;
             this.pos.add(_.createVector(0, force));
+
 
             const angleAmplitude = -.3;
             if(this.angleIteration < 45) {
