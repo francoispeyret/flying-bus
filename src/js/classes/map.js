@@ -97,7 +97,7 @@ export default class Map {
             if(this.sunPos.y > _.height - this.sunR) {
                 this.sunPos.y = this.sunR;
                 this.cycle = 'moon';
-                sounds.owl.play();
+                //sounds.owl.play();
                 sounds.blackbird.stop();
             } else {
                 this.sunPos.add(_.createVector(0, this.timeSpeed));

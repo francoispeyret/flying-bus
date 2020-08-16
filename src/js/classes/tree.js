@@ -8,7 +8,15 @@ export default class Tree {
             _.height - map.altitude - this.h + overlay
         );
     }
-
+        //dessin cactus
+        // const cactus1 = _.color('hsl(99, 52%, ' + (28 + light /2.5) + '%)');
+        //_.fill(cactus1);
+        //_.rect(138, 123,  this.w / 25, this.h / 2.5);
+        //_.rect(138, 133,  this.w / 25, this.h / 2.5);
+        // const cactus2 = _.color('hsl(102, 61%, ' + (8 + light /2.5) + '%)');
+        //_.fill(cactus2);
+        //_.rect(138, 128,  this.w / 25, this.h / 2.5);
+        //_.rect(138, 138,  this.w / 25, this.h / 2.5);
     draw(_) {
         _.noStroke();
         _.fill('#4D352D');
@@ -18,14 +26,22 @@ export default class Tree {
             _.angleMode(_.RADIANS); 
             _.rotate(_.QUARTER_PI);
 
-            _.fill('#3C683C');
+            const tree1 = _.color('hsl(120, 27%, ' + (12 + light /2.5) + '%)');
+            _.fill(tree1);
+            //_.fill('#3C683C');
             _.rect(-24, -32, this.w / 7, this.h / 7);
             _.rect(-10, -20, this.w / 5, this.h / 5);
-            _.fill('#345B34');
+            const tree2 = _.color('hsl(120, 27%, ' + (8 + light /2.5) + '%)');
+            _.fill(tree2);
+            //_.fill('#345B34');
             _.rect(10, 0, this.w / 4, this.h / 4);
-            _.fill('#2D4E2D');
+            const tree3 = _.color('hsl(120, 27%, ' + (4 + light /2.5) + '%)');
+            _.fill(tree3);
+            //_.fill('#2D4E2D');
             _.rect(30, 18, this.w / 2.75, this.h / 2.75);
-            _.fill('#254125');
+            const tree4 = _.color('hsl(120, 27%, ' + (0 + light /2.5) + '%)');
+            _.fill(tree4);
+            //_.fill('#254125');
             _.rect(48, 35, this.w / 2.5, this.h / 2.5);
 
             _.fill('#4D352D');
