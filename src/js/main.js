@@ -70,10 +70,10 @@ let s = (_) => {
             }
         }
         if( _.frameCount % 180 == 0 && treeController1.length < 6) {
-            treeController1.push(new Tree(_, map, _.random(25,90)));
+            treeController1.push(new Tree(_, map, _.random(35,120), map.biome.name));
         }
         if( _.frameCount % 180 == 0 && treeController2.length < 6) {
-            treeController2.push(new Tree(_, map, _.random(-10,-25)));
+            treeController2.push(new Tree(_, map, _.random(-15,-35), map.biome.name));
         }
 
         

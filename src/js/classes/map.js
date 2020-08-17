@@ -71,6 +71,12 @@ export default class Map {
         //this.biome.i += 5;
         this.grass.draw(_, this.light, this.skyLimit);
         this.desert.draw(_, this.light, this.skyLimit);
+        if(this.desert.pos.x < _.width && this.desert.pos.x + this.desert.w > _.width) {
+            this.biome.name = 'desert';
+        }
+        else if(this.grass.pos.x < _.width && this.grass.pos.x + this.grass.w > _.width) {
+            this.biome.name = 'grass';
+        }
         
 
         if(0 == 1) {
