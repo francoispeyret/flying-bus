@@ -17,7 +17,7 @@ export default class Tree {
         //_.fill(cactus2);
         //_.rect(138, 128,  this.w / 25, this.h / 2.5);
         //_.rect(138, 138,  this.w / 25, this.h / 2.5);
-    draw(_) {
+    draw(_, light) {
         _.noStroke();
         _.fill('#4D352D');
         _.rect(this.pos.x, this.pos.y + this.h/4 *3, this.w / 10, this.h/4);

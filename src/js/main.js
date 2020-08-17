@@ -45,7 +45,7 @@ let s = (_) => {
     _.draw = () => {
         map.draw(_, sounds);
         for(let t = 0; t < treeController2.length; t++) {
-            treeController2[t].draw(_);
+            treeController2[t].draw(_, map.light);
             treeController2[t].update(_);
             if(!treeController2[t].isVisible()) {
                 treeController2.splice(t,1);
@@ -62,7 +62,7 @@ let s = (_) => {
             cloudController.push(new Cloud(_));
         }
         for(let t = 0; t < treeController1.length; t++) {
-            treeController1[t].draw(_);
+            treeController1[t].draw(_, map.light);
             treeController1[t].update(_);
             if(!treeController1[t].isVisible()) {
                 treeController1.splice(t,1);
