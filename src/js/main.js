@@ -52,7 +52,7 @@ let s = (_) => {
                 t--;
             }
         }
-        bus.draw(_);
+        bus.draw(_, map);
         bus.update(_, map);
         for(let c of cloudController) {
             c.draw(_);
@@ -75,17 +75,6 @@ let s = (_) => {
         if( _.frameCount % 180 == 0 && treeController2.length < 6) {
             treeController2.push(new Tree(_, map, _.random(-15,-35), map.biome.name));
         }
-
-        
-
-        /*if(map.time > 100) {
-            map.cycle = 'water';
-            const water = _.color('hsla(200, 60%, 50%, 0.5)');
-            _.fill(water);
-            _.rect(0,0,_.width, _.height);
-        } else if(map.time > 300) {
-            map.cycle = 'sun'
-        }*/
     };
 
     window.addEventListener('blur', (e) => {
@@ -100,6 +89,10 @@ let s = (_) => {
             bus.motor.sound2.start();
             bus.motor.sound3.start();
         }
+    });
+
+    document.querySelector('#water').addEventListener('click', function(){
+        map.setWaterBiome();
     });
 
 

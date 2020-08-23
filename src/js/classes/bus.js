@@ -37,10 +37,15 @@ export default class Bus {
 
         this.sounds = sounds;
 
+        this.swim = {
+            state: false,
+            animation: 0
+        }
+
         
     }
 
-    draw(_) {
+    draw(_, map) {
         //console.log(this.pos.x);
         _.push();
 
@@ -105,6 +110,25 @@ export default class Bus {
             _.rect(0 + this.w - 10, 0 + this.h - this.h / 2.9, 10, this.h / 4.75);
             _.rect(0, 0, this.w/30, this.h / 2.2 );
 
+            if(this.swim.state === true) {
+                const eauColor = _.color('hsla(184, 80%, ' + (11 + map.light /2) + '%, 0.7)');
+                _.fill(eauColor);
+                _.rect(0, this.h - this.h / 6, this.w, this.h / 6);
+                _.beginShape();
+                    _.vertex(this.w, this.h - this.h / 6);
+                    _.vertex(this.w - 100, this.h - this.h / 6);
+                    _.vertex(this.w,  this.h - this.h / 6 - 10);
+                _.endShape(_.CLOSE);
+                const eauColor1 = _.color('hsla(184, 80%, ' + (42 + map.light /2) + '%, 0.8)');
+                _.fill(eauColor1);
+                const offsetSwimX = _.sin(this.swim.animation/20)* -15;
+                _.beginShape();
+                    _.vertex(this.w + 0 + offsetSwimX / 2, this.h - this.h / 6 + 5);
+                    _.vertex(this.w - 85 + offsetSwimX * 1.5, this.h - this.h / 6 + 10);
+                    _.vertex(this.w + 15 + offsetSwimX / 2, this.h - this.h / 6 - 10);
+                _.endShape(_.CLOSE);
+            }
+
             
             const offsetY = _.map(this.pos.y, 0, _.height, -50, 90)
             const color = _.map(offsetY, -50, 90, 160, 255)
@@ -124,17 +148,24 @@ export default class Bus {
             this.time += .1;
         }
         if(this.pos.y >  window.innerHeight - 250 &&
-            this.pos.y <  window.innerHeight - 240 &&
-             this.sounds.bump.isPlaying()==false)
+           this.pos.y <  window.innerHeight - 240 &&
+           this.sounds.bump.isPlaying()==false) {
             this.sounds.bump.play();
+           }
         if(this.pos.x - this.w > _.width) {
             this.pos.x = -this.w;
         }
         if(this.pos.x < -this.w*2) {
             this.pos.x = _.width + this.w /2;
         }
-        if(window.innerHeight - map.altitude > this.pos.y + this.h /2 +5) {
+        if(!this.isTouchFloor(map)) {
             this.pos.add(_.createVector(0,3));
+        }
+        if(map.biome.name == 'water' && this.isTouchFloor(map)) {
+            this.swim.state = true;
+            this.swim.animation++;
+        } else if(this.swim.state == true) {
+            this.swim.state = false;
         }
         this.moveMethod(_);
         this.motor.sound1.freq(73.4 + this.motor.i   + _.abs(5*3));
@@ -149,6 +180,10 @@ export default class Bus {
         if(this.motor.i>10) {
             this.motor.i = 1;
         }
+    }
+
+    isTouchFloor(map) {
+        return !(window.innerHeight - map.altitude > this.pos.y + this.h /2 +5);
     }
 
     moveUp(_) {

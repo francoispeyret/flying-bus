@@ -71,18 +71,15 @@ export default class Map {
         //this.biome.i += 5;
         this.grass.draw(_, this.light, this.skyLimit);
         this.desert.draw(_, this.light, this.skyLimit);
-        if(this.desert.pos.x < _.width && this.desert.pos.x + this.desert.w > _.width) {
+        if(this.biome.name == 'water') {
+            this.water.draw(_, this.light, this.skyLimit);
+        }
+        else if(this.desert.pos.x < _.width && this.desert.pos.x + this.desert.w > _.width) {
             this.biome.name = 'desert';
         }
         else if(this.grass.pos.x < _.width && this.grass.pos.x + this.grass.w > _.width) {
             this.biome.name = 'grass';
         }
-        
-
-        if(0 == 1) {
-            this.water.draw(_, this.light, this.skyLimit);
-        }
-
 
         //console.log(this.sunPos.y);
         if(this.cycle == 'sun') {
@@ -122,6 +119,10 @@ export default class Map {
                 this.moonPos.add(_.createVector(0, this.timeSpeed));
             }
         }
+    }
+
+    setWaterBiome() {
+        this.biome.name = 'water';
     }
 
 }
